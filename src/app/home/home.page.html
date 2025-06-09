@@ -1,0 +1,99 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="home-title">
+      Bienvenida {{ nombre }}
+    </ion-title>
+    <app-company-name [companyName]="'Cambia'"></app-company-name>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Card: Resumen de porciones -->
+  <ion-card>
+    <ion-card-content>
+      <p>
+        Hoy has seleccionado 🍽️ {{ selectedTotal }} / {{ dailyGoal }} porciones
+      </p>
+      <ion-progress-bar [value]="selectedTotal / dailyGoal"></ion-progress-bar>
+      <p class="meta">Meta diaria: {{ dailyGoal }} porciones</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Requerimientos diarios -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Tus requerimientos diarios</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="req-grid">
+      <div>
+        <p class="label">Kcal</p>
+        <p class="value">{{ dailyKcal }}</p>
+      </div>
+      <div>
+        <p class="label">Proteínas</p>
+        <p class="value">{{ dailyProtein }} g</p>
+      </div>
+      <div>
+        <p class="label">Carbs</p>
+        <p class="value">{{ dailyCarbs }} g</p>
+      </div>
+      <div>
+        <p class="label">Lípidos</p>
+        <p class="value">{{ dailyFat }} g</p>
+      </div>
+      <div>
+        <p class="label">Agua</p>
+        <p class="value">{{ dailyWater }} L</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Sección “Comidas + Ejercicio + Agua” -->
+  <ion-card *ngFor="let section of sections">
+    <ion-card-header>
+      <ion-card-title>{{ section.title }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p *ngIf="section.type !== 'exercise' && section.type !== 'water'">
+        {{ section.data.calories || 0 }} kcal |
+        {{ section.data.protein || 0 }} P |
+        {{ section.data.carbs || 0 }} C |
+        {{ section.data.fat || 0 }} G
+      </p>
+
+      <p *ngIf="section.type === 'exercise'">
+        {{ section.data.calories || 0 }} kcal
+      </p>
+
+      <p *ngIf="section.type === 'water'">
+        {{ section.data.intake.toFixed(1) }} / {{ section.data.goal }} L
+      </p>
+
+      <div *ngIf="section.type === 'exercise'" class="exercise-info">
+        <ion-icon name="flame-outline"></ion-icon>
+        <span>{{ section.data.type || 'Sedentario' }}</span>
+      </div>
+
+      <div *ngIf="section.type === 'water'" class="water-cups">
+        <ion-icon
+          *ngFor="let cup of waterCups"
+          [name]="cup.filled ? 'water' : 'water-outline'">
+        </ion-icon>
+      </div>
+
+      <ion-button
+        expand="block"
+        fill="solid"
+        class="portion-button"
+        (click)="addEntry(section.type)">
+        <ion-icon slot="start" name="add-outline"></ion-icon>
+        Añadir
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

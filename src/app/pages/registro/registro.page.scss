@@ -1,0 +1,94 @@
+// Definición de colores base
+$primary: #CAB4D6;    // lila
+$accent:  #f6d3d8;    // rosa pálido
+$text:    #333333;    // gris oscuro para texto
+
+// Fondo de la página con imagen
+ion-content {
+  --background: none;
+  background: url('../../../assets/img/fondologin.png') center/cover no-repeat;
+}
+
+// Título centrado en el header
+.center-title {
+  margin: 0 auto;
+  text-align: center;
+}
+
+// Tarjeta central
+ion-card {
+  width: 90%;
+  max-width: 400px;
+  margin: 10% auto;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  border: 2px solid $primary;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: none;
+}
+
+// Ion-Items transparentes dentro de la tarjeta
+ion-card ion-item {
+  --background: transparent;
+}
+
+// Labels transparentes y con color primario
+ion-card ion-label {
+  --background: transparent;
+  color: $primary;
+}
+
+// Inputs transparentes con texto oscuro
+ion-card ion-input {
+  --background: transparent;
+  color: $text;
+}
+
+// Selects transparentes con texto oscuro
+ion-card ion-select {
+  --background: transparent;
+  color: $text;
+}
+
+// Fallback para select nativo
+ion-card select {
+  background-color: transparent;
+  color: $text;
+}
+
+// Angular Material Datepicker: fondos transparentes
+mat-form-field {
+  background-color: transparent;
+}
+
+mat-form-field .mat-form-field-flex,
+mat-form-field .mat-form-field-infix {
+  background-color: transparent;
+}
+
+// Input de Material transparente y texto oscuro
+input[matInput] {
+  background-color: transparent;
+  color: $text;
+}
+
+// Toggle del datepicker transparente
+mat-datepicker-toggle {
+  background-color: transparent;
+}
+
+// Botón de guardar datos dentro de la tarjeta
+ion-card ion-button {
+  --background: #CAB4D6;
+  --color: #f6f6f6;
+  font-family: Georgia, serif;
+  padding: 10px;
+  margin-top: 1rem;
+}
+
+
+
+
+
+

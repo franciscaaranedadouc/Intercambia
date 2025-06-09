@@ -1,0 +1,99 @@
+// Definición de colores base
+$primary: #CAB4D6;    // lila
+$accent:  #f6d3d8;    // rosa pálido
+$text:    #333333;    // gris oscuro para texto
+
+// Fondo de la página con imagen
+ion-content {
+  --background: none; /* Elimina cualquier fondo global */
+  background: url('../../../assets/img/fondologin.png') center/cover no-repeat;
+}
+
+// Contenedor de login
+.login-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10%;
+}
+
+// Tarjeta central
+.login-card {
+  width: 90%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  border: 2px solid $primary;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+// Logo animado (combinando zoom y rotación)
+.logo-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.logo {
+  width: 120px;
+  animation: rotate360 5s linear infinite;
+
+}
+
+@keyframes rotate360 {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+// Inputs y labels
+.input-item {
+  --background: transparent;
+  --border: none;
+  margin-bottom: 1rem;
+
+  ion-label {
+    color: $primary;
+    font-weight: 600;
+  }
+
+  ion-input {
+    --background: transparent;
+    color: $text;
+  }
+}
+
+// Botón de login
+.login-button {
+  --background: #CAB4D6;
+  --color: #f6f6f6;
+  margin: 1rem 0 0.5rem;
+  border: none;
+}
+
+// Botón de registro
+.register-button {
+  --color: $primary;
+  font-size: 0.7rem;
+  margin-top: 10px;
+}
+
+// Enlace "olvidaste contraseña"
+.forgot-password a {
+  color: $primary;          
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 0.7rem;
+  margin-top: 10px;   
+}
+
+/* Opcional: si quieres que al pasar el ratón se subraye */
+.forgot-password a:hover {
+  text-decoration: underline;
+}

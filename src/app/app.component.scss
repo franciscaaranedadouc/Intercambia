@@ -1,0 +1,24 @@
+/* Definición de colores base */
+$primary: #CAB4D6;    // lila
+$accent:  #f6d3d8;    // rosa pálido
+$text:    #333333;    // gris oscuro para texto
+$muted:   #8c8c8c;    // gris claro para texto secundario
+
+ion-list {
+  --background: transparent; /* Fondo transparente para el listado */
+  background-color: transparent;
+}
+
+ion-item {
+  --background: white; /* Fondo blanco para cada ítem */
+  background-color: transparent; 
+}
+
+ion-item ion-icon { 
+  color: $primary;  /* iconos en lila */
+}
+
+ion-toolbar {
+  background-color: $primary;  /* toolbar en lila */
+  color: white;                /* texto/blancos en la cabecera */
+}

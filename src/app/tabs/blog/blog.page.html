@@ -1,0 +1,103 @@
+<!-- src/app/tabs/blog/blog.page.html -->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Blog Saludable</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="newspaper-outline"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Filtro por categoría -->
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="selectedCategory" mode="ios">
+      <ion-segment-button value="all">
+        <ion-label>Todo</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="nutrition">
+        <ion-label>Nutrición</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="exercise">
+        <ion-label>Ejercicio</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="lifestyle">
+        <ion-label>Estilo de Vida</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding blog-content">
+
+  <!-- Búsqueda de artículos -->
+  <ion-searchbar
+    [(ngModel)]="searchQuery"
+    placeholder="🔍 Buscar en el blog"
+    showCancelButton="never">
+  </ion-searchbar>
+
+  <!-- Sección de Artículo Destacado -->
+  <ion-card class="featured-article">
+    <img src="assets/img/blog/featured.jpg" alt="Artículo Destacado" />
+    <ion-card-header>
+      <ion-card-subtitle>Destacado</ion-card-subtitle>
+      <ion-card-title>5 Superalimentos para Potenciar tu Energía</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Descubre cómo incorporar estos superalimentos en tu dieta diaria para mantener altos niveles de energía y bienestar.
+      <ion-button fill="clear" size="small" (click)="openPost(featuredPost.id)">
+        Leer más
+        <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Lista de artículos -->
+  <ion-list>
+    <ion-item-divider color="light">
+      <ion-label>Últimos Artículos</ion-label>
+    </ion-item-divider>
+
+    <ion-card *ngFor="let post of filteredPosts">
+      <img [src]="post.image" alt="{{ post.title }}" />
+      <ion-card-header>
+        <ion-card-title>{{ post.title }}</ion-card-title>
+        <ion-card-subtitle>
+          {{ post.date | date:'dd/MM/yyyy' }} • {{ post.author }}
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ post.excerpt }}</p>
+        <ion-chip color="primary" outline>
+          <ion-icon name="pricetag-outline"></ion-icon>
+          {{ post.category | titlecase }}
+        </ion-chip>
+        <ion-button expand="block" fill="outline" (click)="openPost(post.id)">
+          Leer artículo
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <ion-card class="measures-card">
+  <ion-card-header>
+    <ion-card-title>Medidas Caseras</ion-card-title>
+    <ion-card-subtitle>Equivalencias prácticas en tu cocina</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <img src="assets/img/medidas-caseras.png" alt="Medidas caseras" />
+    <ul class="measures-list">
+      <li><strong>Taza 200 ml</strong> &nbsp;&nbsp;| &nbsp;Taza 300 ml</li>
+      <li>1 taza  &nbsp; &frasl; &nbsp;¾ taza  &nbsp; &frasl; &nbsp;½ taza  &nbsp; &frasl; &nbsp;¼ taza</li>
+      <li><strong>Cucharada</strong> / <em>Cucharadita</em></li>
+      <li><strong>Rasa</strong> / <em>Colmada</em></li>
+      <li><strong>Balanza de alimentos</strong> (gramos)</li>
+      <li><strong>Tazas y cucharas medidoras</strong></li>
+    </ul>
+  </ion-card-content>
+</ion-card>
+
+</ion-content>

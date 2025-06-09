@@ -1,0 +1,96 @@
+<!-- src/app/tabs/recetas/recetas.page.html -->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Recetas</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="leaf-outline"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Filtro por objetivo -->
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="selectedObjective" mode="md">
+      <ion-segment-button value="lose">
+        <ion-icon name="remove-circle-outline"></ion-icon>
+        <ion-label>Perder grasa</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="gain">
+        <ion-icon name="add-circle-outline"></ion-icon>
+        <ion-label>Aumentar masa</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="maintain">
+        <ion-icon name="swap-horizontal-outline"></ion-icon>
+        <ion-label>Mantener peso</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding recetas-content">
+
+  <!-- Búsqueda rápida -->
+  <ion-searchbar
+    [(ngModel)]="searchText"
+    placeholder=" Busca tu receta saludable">
+  </ion-searchbar>
+
+  <!-- Card de recetas destacadas -->
+  <ion-grid class="featured-grid">
+  <ion-row>
+    <ion-col size="12" size-sm="6" size-md="4" *ngFor="let rec of featuredRecipes">
+      <ion-card class="featured-card">
+        <img [src]="rec.image" alt="{{ rec.title }}" />
+        <ion-card-header>
+          <ion-card-title>{{ rec.title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>{{ rec.shortDesc }}</p>
+          <ion-chip color="primary">
+            <ion-icon name="flame-outline"></ion-icon>
+            {{ rec.calories }} kcal
+          </ion-chip>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+  <!-- Grid de recetas filtradas -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" *ngFor="let rec of filteredRecipes">
+        <ion-card>
+          <img [src]="rec.image" alt="{{rec.title}}" />
+          <ion-card-header>
+            <ion-card-title>{{ rec.title }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>{{ rec.shortDesc }}</p>
+            <div class="meta">
+              <ion-chip color="tertiary">
+                <ion-icon name="nutrition-outline"></ion-icon>
+                {{ rec.protein }} g P
+              </ion-chip>
+              <ion-chip color="success">
+                <ion-icon name="leaf-outline"></ion-icon>
+                {{ rec.carbs }} g C
+              </ion-chip>
+              <ion-chip color="warning">
+                <ion-icon name="water-outline"></ion-icon>
+                {{ rec.water }} mL
+              </ion-chip>
+            </div>
+            <ion-button expand="block" fill="outline" (click)="openRecipe(rec.id)">
+              Ver receta
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

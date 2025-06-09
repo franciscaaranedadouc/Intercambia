@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <app-company-name [companyName]="'Frutix'"></app-company-name>
+    <ion-buttons slot="end">
+      <ion-menu-button menu="mainMenu"></ion-menu-button>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true"> 
+
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="historial">
+        <ion-icon name="time-outline"></ion-icon>
+        <ion-label>Historial</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="recetas">
+        <ion-icon name="nutrition-outline"></ion-icon>
+        <ion-label>Recetas</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="blog">
+        <ion-icon name="reader-outline"></ion-icon>
+        <ion-label>Blog</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+
+
+</ion-content>

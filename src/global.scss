@@ -1,0 +1,88 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import "@ionic/angular/css/palettes/dark.system.css";
+
+/**
+ * Angular Material
+ **/
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+/* estilos globales*/ 
+
+/* Definición de colores base */
+$primary: #CAB4D6;    // lila
+$accent:  #f6d3d8;    // rosa pálido
+$text:    #333333;    // gris oscuro para texto
+
+/* Fondo de las páginas */
+ion-app, ion-content {
+    --background: url('../src/assets/img/fondopaginas.png') no-repeat center center / cover;
+ }
+
+ ion-header,
+ ion-toolbar {
+    --background: transparent; /* Fondo transparente */
+    --ion-toolbar-background: transparent; /* Fondo transparente para la toolbar */
+    --ion-toolbar-border-color: transparent; /* Elimina el borde */
+  }
+
+  ion-header,
+  ion-toolbar,
+  ion-buttons,
+  app-company-name {
+    color: $primary;
+  }
+
+/* Color de textos e iconos en header */
+ion-header,
+ion-toolbar,
+ion-buttons,
+app-company-name {
+  color: $primary;
+}
+/* Eliminar sombra en Android (modo md) */
+.header-md {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+/* Título de pestañas centrado y en color primario */
+.title_tab h2 {
+  text-align: center;
+  color: $primary;
+}

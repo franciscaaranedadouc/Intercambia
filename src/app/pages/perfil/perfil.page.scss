@@ -1,0 +1,43 @@
+// Definición de colores base
+$primary: #CAB4D6;    // lila
+$accent:  #f6d3d8;    // rosa pálido
+$text:    #333333;    // gris oscuro para texto
+
+// Estilos específicos para el perfil
+.perfil-card, .weekly-card {
+  margin: 1rem auto;
+  width: 90%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  border: 2px solid $primary;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: none;
+}
+
+// Ajusta la lista inset con separación visual acorde al estilo
+ion-list[inset] {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  background: transparent;
+  color: $text;
+}
+
+// Iconos estilizados con tamaño adaptado al diseño general
+ion-item ion-icon[slot="start"] {
+  font-size: 1.4rem;
+  color: $primary;
+}
+
+.perfil-card ion-item {
+  --background: rgba(255, 255, 255, 0.5);
+}
+
+.perfil-card ion-list[inset] ion-item {
+  --background: transparent;
+}
+
+.perfil-card ion-select {
+  --background: rgba(255, 255, 255, 0.5);
+}

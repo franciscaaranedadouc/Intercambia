@@ -1,0 +1,74 @@
+<!-- src/app/tabs/historial/historial.page.html -->
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Historial de Seguimiento</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding">
+
+  <!-- 1) Card: Evolución de Peso -->
+  <!-- Gráfico normal -->
+<ion-card (click)="openChartZoom()" style="cursor:pointer">
+  <ion-card-header>
+    <ion-card-title>Evolución de Peso</ion-card-title>
+    <ion-card-subtitle>Últimos 30 días</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <canvas #weightChart id="weight-chart"></canvas>
+  </ion-card-content>
+</ion-card>
+
+<!-- Modal/Fondo oscuro y gráfico ampliado -->
+<div *ngIf="isChartZoomed" class="chart-zoom-modal" (click)="closeChartZoom()">
+  <div class="chart-zoom-content" (click)="$event.stopPropagation()">
+    <canvas #zoomChart id="zoom-chart"></canvas>
+    <ion-button expand="block" fill="clear" (click)="closeChartZoom()">Cerrar</ion-button>
+  </div>
+</div>
+
+
+  <!-- 2) Card: Metas Semanales -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Metas Semanales</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="weekly-bars">
+        <span *ngFor="let done of weekArray" [class.done]="done"></span>
+      </div>
+      <p class="streak">🏅 {{ streak }} días completados</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- 3) Card: Resumen Mensual -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumen Mensual</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>Promedio de peso</ion-label>
+          <ion-note slot="end">{{ averageWeight | number:'1.1-1' }} kg</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Días por encima de meta</ion-label>
+          <ion-note slot="end">{{ daysAboveGoal }}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Días por debajo de meta</ion-label>
+          <ion-note slot="end">{{ daysBelowGoal }}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
