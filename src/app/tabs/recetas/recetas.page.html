@@ -6,11 +6,8 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Recetas</ion-title>
-    <ion-buttons slot="end">
-      <ion-icon name="leaf-outline"></ion-icon>
-    </ion-buttons>
   </ion-toolbar>
-
+</ion-header>
   <!-- Filtro por objetivo -->
   <ion-toolbar>
     <ion-segment [(ngModel)]="selectedObjective" mode="md">
@@ -28,7 +25,7 @@
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
-</ion-header>
+
 
 <ion-content fullscreen class="ion-padding recetas-content">
 

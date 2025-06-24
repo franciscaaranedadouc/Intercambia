@@ -5,9 +5,6 @@
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Mi Perfil</ion-title>
-    <ion-buttons slot="end">
-      <ion-menu-button menu="mainMenu"></ion-menu-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -119,18 +116,5 @@
 </ion-card>
 
   </ion-accordion-group>
-
-  <!-- Progreso Semanal -->
-  <ion-card class="weekly-card">
-    <ion-card-header>
-      <ion-card-title>Progreso Semanal</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="bars">
-        <span *ngFor="let done of weekArray" [class.done]="done"></span>
-      </div>
-      <p>🏅 {{ streak }} días seguidos</p>
-    </ion-card-content>
-  </ion-card>
 
 </ion-content>

@@ -3,12 +3,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Blog Saludable</ion-title>
-    <ion-buttons slot="end">
-      <ion-icon name="newspaper-outline"></ion-icon>
-    </ion-buttons>
   </ion-toolbar>
 
   <!-- Filtro por categoría -->
@@ -35,13 +32,13 @@
   <!-- Búsqueda de artículos -->
   <ion-searchbar
     [(ngModel)]="searchQuery"
-    placeholder="🔍 Buscar en el blog"
+    placeholder=" Buscar en el blog"
     showCancelButton="never">
   </ion-searchbar>
 
   <!-- Sección de Artículo Destacado -->
   <ion-card class="featured-article">
-    <img src="assets/img/blog/featured.jpg" alt="Artículo Destacado" />
+    <img src="assets/img/featured.png" alt="Artículo Destacado" />
     <ion-card-header>
       <ion-card-subtitle>Destacado</ion-card-subtitle>
       <ion-card-title>5 Superalimentos para Potenciar tu Energía</ion-card-title>
