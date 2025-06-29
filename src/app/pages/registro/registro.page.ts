@@ -1,8 +1,9 @@
+// src/app/pages/registro/registro.page.ts
+
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular'; 
-import { MenuController } from '@ionic/angular'; 
-import { AlertController } from '@ionic/angular';  
+import { NavController, MenuController, AlertController } from '@ionic/angular';
 import { FormtearFechaPipe } from '../../pipes/formtear-fecha.pipe';
+import { SQLiteService } from '../../data-service/sqlite.service';
 
 @Component({
   selector: 'app-registro',
@@ -11,90 +12,88 @@ import { FormtearFechaPipe } from '../../pipes/formtear-fecha.pipe';
   standalone: false
 })
 export class RegistroPage implements OnInit {
+  nombre = '';
+  apellido = '';
+  email = '';
+  password = '';
+  selectedOption = ''; // objetivo
+  selectedDate: any = '';
 
-  nombre:         any='';
-  apellido:       any='';
-  email:          any='';
-  password:       any='';
-  selectedOption: any=''; // objetivo
-  selectedDate:   any=''; 
-   
-
- constructor(
-  private alertController: AlertController, 
-  private menu: MenuController,
-  private navCtrl: NavController,
-  private formtearFechaPipe: FormtearFechaPipe 
- ) { }
+  constructor(
+    private alertController: AlertController,
+    private menu: MenuController,
+    private navCtrl: NavController,
+    private formtearFechaPipe: FormtearFechaPipe,
+    private sqliteService: SQLiteService
+  ) {}
 
   ngOnInit() {
-     this.menu.close("mainMenu");
+    this.menu.close('mainMenu');
+    this.sqliteService.inicializarBaseDatos();
   }
 
-    private async presentAlert(message: string) {
+  private async presentAlert(message: string): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Mensaje',
       message,
       buttons: ['OK']
     });
-
     await alert.present();
   }
 
-   async guardar(): Promise<void> {
-    // Nombre y Apellido no vacíos
+  async guardar(): Promise<void> {
+    // Validaciones básicas
     if (!this.nombre.trim() || !this.apellido.trim()) {
-      await  this.presentAlert('El nombre y el apellido son obligatorios.');
-      return;
+      return this.presentAlert('El nombre y el apellido son obligatorios.');
     }
 
-    // Email válido
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.email)) {
-      await this.presentAlert('Por favor ingresa un correo electrónico válido.');
-      return;
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
+    if (!emailValido) {
+      return this.presentAlert('Por favor ingresa un correo electrónico válido.');
     }
 
-    // Contraseña entre 3 y 4 caracteres
     if (!this.password || this.password.length < 3 || this.password.length > 4) {
-      await this.presentAlert('La contraseña debe tener entre 3 y 4 caracteres.');
-      return;
+      return this.presentAlert('La contraseña debe tener entre 3 y 4 caracteres.');
     }
 
-    // Objetivo seleccionado
     if (!this.selectedOption) {
-      await this.presentAlert('Debes seleccionar un objetivo.');
-      return;
+      return this.presentAlert('Debes seleccionar un objetivo.');
     }
 
-    // Fecha de nacimiento y mayor de 18 años
     if (!this.selectedDate) {
-      await this.presentAlert('Debes ingresar tu fecha de nacimiento.');
-      return;
+      return this.presentAlert('Debes ingresar tu fecha de nacimiento.');
     }
-    const hoy = new Date();
+
+    // Verificar edad mínima
     const nacimiento = new Date(this.selectedDate);
-    const edadMs = hoy.getTime() - nacimiento.getTime();
-    const edadDate = new Date(edadMs);
-    const edad = Math.abs(edadDate.getUTCFullYear() - 1970);
+    const hoy = new Date();
+    const edad = hoy.getFullYear() - nacimiento.getFullYear();
     if (edad < 18) {
       return this.presentAlert('Debes ser mayor de 18 años para registrarte.');
     }
 
-    // Si pasa todas las validaciones
+    // Verificar si el correo ya está en la base de datos
+    const yaExiste = await this.sqliteService.existeCorreo(this.email.trim());
+    if (yaExiste) {
+      return this.presentAlert('Este correo ya está registrado.');
+    }
+
     const fechaFormateada = this.formtearFechaPipe.transform(this.selectedDate);
-    console.log({
-      nombre: this.nombre,
-      apellido: this.apellido,
-      email: this.email,
+
+    const ok = await this.sqliteService.guardarUsuario({
+      nombre: this.nombre.trim(),
+      apellido: this.apellido.trim(),
+      email: this.email.trim(),
       password: this.password,
       objetivo: this.selectedOption,
       fechaNacimiento: fechaFormateada
     });
 
-    // Muestra mensaje de éxito
-    await this.presentAlert('¡Registro exitoso!');
-    this.navCtrl.navigateRoot('/home');
-    return;
+    if (ok) {
+      await this.presentAlert('¡Registro exitoso!');
+      this.navCtrl.navigateRoot('/login');
+    } else {
+      await this.presentAlert('Error: ocurrió un fallo interno al guardar.');
+    }
   }
 }

@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+//src/app/pages/login/login.page.ts
+import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { AlertController } from '@ionic/angular'; 
+import { AlertController } from '@ionic/angular';
+import { DataServiceService } from '../../data-service/data-service.service';
+import { Router } from '@angular/router';
+import { SQLiteService } from '../../data-service/sqlite.service';
 
 @Component({
   selector: 'app-login',
@@ -8,67 +12,89 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
   standalone: false
 })
-export class LoginPage   {
-
+export class LoginPage {
   email: string = '';
   password: string = '';
 
-  constructor(private navCtrl: NavController, private alertController: AlertController ) { }
+  nuevoUsuario = { name: '', email: '', password: '' };
+  users: any[] = [];
 
-   // Método para mostrar alerta de error
-   async mostrarAlerta(mensaje: string) {
+  constructor(
+    private navCtrl: NavController,
+    private alertController: AlertController,
+    private dataService: DataServiceService,
+    private sqliteService: SQLiteService,
+    private router: Router
+  ) {}
+
+  // Método para mostrar alertas genéricas
+  private async mostrarAlerta(mensaje: string) {
     const alert = await this.alertController.create({
-      header: 'Error',
+      header: 'Aviso',
       message: mensaje,
       buttons: ['OK']
     });
     await alert.present();
   }
-// Función para validar el formato del email
-   validarEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular básica para validar email
+
+  // Validación de formato de email
+  private validarEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
 
-  login() {
-    // Verificar que el campo de correo no esté vacío
+  // Login de usuario
+  async login() {
+    //  Validaciones
     if (!this.email) {
-     this.mostrarAlerta('El campo de correo no puede estar vacío.');
-     return;
-   }
+      return this.mostrarAlerta('El correo no puede estar vacío.');
+    }
+    if (!this.validarEmail(this.email)) {
+      return this.mostrarAlerta('Formato de correo inválido.');
+    }
+    if (!this.password) {
+      return this.mostrarAlerta('La contraseña no puede estar vacía.');
+    }
+    if (this.password.length < 3 || this.password.length > 4) {
+      return this.mostrarAlerta('La contraseña debe tener entre 3 y 4 caracteres.');
+    }
 
-   // Validar el formato del correo
-  if (!this.validarEmail(this.email)) {
-    this.mostrarAlerta('El formato del correo es inválido.');
-    return;
+    // Llamada al servicio de datos para autenticar al usuario
+    const usuario = await this.sqliteService.loginUsuario(this.email, this.password);
+    // 3) Según el resultado, rediriges o muestras error
+    if (usuario) {
+      console.log('Login OK, usuario:', usuario);
+      localStorage.setItem('userId', usuario.id.toString());
+      this.navCtrl.navigateRoot('/home');
+    } else {
+      await this.mostrarAlerta('Usuario no registrado. Por favor, regístrate primero.');
+    }
   }
 
-   // Verificar que la contraseña no esté vacía
-   if (!this.password) {
-    this.mostrarAlerta('El campo de contraseña no puede estar vacío.');
-    return;
-  }
-
-    // Verificar que la contraseña tenga máximo 4 caracteres
-    if ((this.password.length < 3) || (this.password.length > 8)) {
-      this.mostrarAlerta('La contraseña debe tener 3 y 8 caracteres.');
-      return;
-    }
-    
-    // Si todas las validaciones son correctas, navega a la página "home"
-  this.navCtrl.navigateForward(['/home'], {
-    queryParams: {
-      email: this.email,
-      password: this.password
-    }
-  });
- 
-}
-
-  registro()
-  {
+  // DataService para registro
+  registro() {
     this.navCtrl.navigateForward(['/registro']);
   }
 
+  // Agregar un nuevo usuario
+async agregarUsuario() {
+  const { name, email, password } = this.nuevoUsuario;
+  // Si no usas apellido, nivelEducacion o fechaNacimiento, pásalos vacíos:
+  const success = await this.dataService.registerUser(
+    name,
+    '',        // apellido
+    email,
+    password,
+    '',        // nivelEducacion
+    ''         // fechaNacimiento
+  );
+
+  if (success) {
+    await this.mostrarAlerta('Usuario agregado: ' + name);
+    this.users.push({ name, email, password });
+    this.nuevoUsuario = { name: '', email: '', password: '' };
+  } else {
+    await this.mostrarAlerta('Error al agregar usuario');
+  }
 }
- 
+}

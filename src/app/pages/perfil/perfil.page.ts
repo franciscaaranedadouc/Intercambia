@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 interface HealthEntry {
   name: string;
@@ -64,10 +65,10 @@ export class PerfilPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    //this.menu.close('mainMenu');
+    // this.menu.close('mainMenu');
   }
+
   savePersonal() {
-    // Guarda peso y objetivo (API, Storage…)
     console.log('Guardando personal:', {
       weight: this.user.weight,
       objective: this.user.objective
@@ -75,11 +76,24 @@ export class PerfilPage implements OnInit {
   }
 
   changePlan() {
-    // Lógica para cambiar plan (ir a pasarela de pago…)
     console.log('Cambiando plan a:', this.user.plan.type);
-    // Actualiza el chip:
     this.user.plan.name = this.user.plan.type.charAt(0).toUpperCase() +
       this.user.plan.type.slice(1);
+  }
+
+  async tomarFoto() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera
+      });
+
+      this.user.avatarUrl = image.dataUrl;
+    } catch (error) {
+      console.error('Error al tomar foto:', error);
+    }
   }
 
 }

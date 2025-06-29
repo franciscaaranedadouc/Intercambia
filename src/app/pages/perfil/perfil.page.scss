@@ -41,3 +41,18 @@ ion-item ion-icon[slot="start"] {
 .perfil-card ion-select {
   --background: rgba(255, 255, 255, 0.5);
 }
+
+.avatar-container {
+  display: flex;
+  flex-direction: column; /* Uno encima del otro */
+  align-items: center;     /* Centrado horizontal */
+  margin-top: 1rem;
+}
+
+.avatar-container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.5rem; /* Espacio entre la imagen y el botón */
+}

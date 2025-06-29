@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'; 
 import { MenuController } from '@ionic/angular';
+import { SQLiteService } from '../data-service/sqlite.service';
+
 
 interface PortionGroup {
   id: string;
@@ -24,7 +26,7 @@ interface Section {
 })
 export class HomePage implements OnInit {
   // 0) Usuario
-  nombre = 'Usuario';
+  nombre = '';
   email = '';
   password = '';
 
@@ -92,16 +94,27 @@ export class HomePage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private menu: MenuController
+    private menu: MenuController,
+    private sqliteService: SQLiteService
   ) {}
 
-  ngOnInit() {
-    this.menu.close('mainMenu');
-    this.route.queryParams.subscribe(params => {
-      this.email = params['email'] || '';
-      this.password = params['password'] || '';
-      this.nombre = this.email ? this.email.split('@')[0] : 'Usuario';
-    });
+  async ngOnInit() {
+    // 1) Cierra el menú
+    await this.menu.close('mainMenu');
+
+    // 2) Lee el userId que guardamos en el login
+    const idStr = localStorage.getItem('userId');
+    if (!idStr) {
+      // si no hay ID, queda "Usuario"
+      return;
+    }
+    const userId = +idStr;
+
+    // 3) Consulta SQLite por ese usuario y extrae el nombre
+    const usuario = await this.sqliteService.obtenerUsuarioPorId(userId);
+    if (usuario) {
+      this.nombre = usuario.nombre;
+    }
   }
 
   /** Total de porciones */
